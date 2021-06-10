@@ -1,0 +1,59 @@
+CREATE TABLE IF NOT EXISTS `cadop` (
+`id` int(255),
+`Registro ANS` int(255), 
+`CNPJ` int(255), 
+`Razão Social` varchar(255), 
+`Nome Fantasia` varchar(255),
+`Modalidade` varchar(255),
+`Logradouro` varchar(255),
+`Número` varchar(255),
+`Complemento` varchar(255),
+`Bairro` varchar(255), 
+`Cidade` varchar(255),
+`UF` varchar(255), 
+`CEP` int(255),
+`DDD` int(255), 
+`Telefone` int(255),
+`Fax` int(255),
+`Endereço eletrônico` varchar(255),
+`Representante` varchar(255),
+`Cargo Representante` varchar(255),
+`Data Registro ANS` varchar(255)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+LOAD DATA INFILE 'Relatorio_cadop.csv' 
+INTO TABLE  cadop
+FIELDS TERMINATED BY ';' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES;
+
+
+CREATE TABLE IF NOT EXISTS `intuitivet` (
+`DATA` varchar(255),
+`REG_ANS` int(255),
+`CD_CONTA_CONTABIL` int(255),
+`DESCRICAO` varchar(255),
+`VL_SALDO_FINAL` varchar(255)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+LOAD DATA INFILE '1T2019.csv' 
+INTO TABLE intuitivet
+FIELDS TERMINATED BY ';' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES;
+
+observação:
+para o resto das importações basta substituir o nome do arquivo(1T2019.csv).
+
+Para consultar 10 operadoras que mais tiveram despesas com "EVENTOS/ SINISTROS CONHECIDOS OU AVISADOS  DE ASSISTÊNCIA A SAÚDE MEDICO HOSPITALAR" no último trimestre:
+
+select * from intuitivet where DESCRICAO = "EVENTOS/ SINISTROS CONHECIDOS OU AVISADOS  DE ASSISTÊNCIA A SAÚDE MEDICO HOSPITALAR" and DATA BETWEEN ('2019-11-01') AND ('2021-01-31'); order by max(VL_SALDO_FINAL) LIMIT 10
+
+Para consultar 10 operadoras que mais tiveram despesas com "EVENTOS/ SINISTROS CONHECIDOS OU AVISADOS  DE ASSISTÊNCIA A SAÚDE MEDICO HOSPITALAR" no último ano:
+
+select * from intuitivet where DESCRICAO = "EVENTOS/ SINISTROS CONHECIDOS OU AVISADOS DE ASSISTÊNCIA A SAUDE MEDICO HOSPITALAR" and DATA BETWEEN ('2019-01-01') AND ('2019-12-31') order by max(VL_SALDO_FINAL) LIMIT 10
